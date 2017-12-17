@@ -15,7 +15,7 @@ setUpMongoose(mongoose);
 
 //root route
 app.get("/", (req, res, next) => {
-	return res.send("Go to /users, /companies, or /jobs");
+	return res.json("Go to /users, /companies, or /jobs");
 });
 
 //resource routes
@@ -27,7 +27,7 @@ app.use("/companies", companiesRouter);
 
 //error handler
 app.use((err, req, res, next) => {
-	res.send(err);
+	res.json(err);
 });
 
 module.exports = app;
