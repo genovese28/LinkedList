@@ -1,2 +1,3 @@
-exports.userHandler = require('./user')
-//exports.usershandler = require('./users')
+exports.userHandler = require("./user");
+exports.companyHandler = require("./company");
+/*exports.jobHandler = require("./job");*/

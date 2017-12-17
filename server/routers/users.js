@@ -3,7 +3,14 @@ const { userHandler } = require("../handlers");
 const router = express.Router();
 
 router
-  .route('/')
-  .post(userHandler.createUser);
+	.route("")
+	.get(userHandler.readUsers)
+	.post(userHandler.createUser);
 
-  module.exports = router;
+router
+	.route("/:username")
+	.get(userHandler.readUser)
+	.patch(userHandler.updateUser)
+	.delete(userHandler.deleteUser);
+
+module.exports = router;

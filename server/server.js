@@ -1,27 +1,33 @@
-// npm packages
-const bodyParser = require('body-parser');
-const express = require('express');
+const express = require("express");
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+const {
+	setUpBodyParser,
+	setUpHeaders,
+	setUpMongoose
+} = require("./middleware");
 
 const app = express();
 
-// app config
-app.set('view engine', 'pug');
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static(__dirname + '/public')); 
+setUpBodyParser(app, bodyParser);
+setUpHeaders(app);
+setUpMongoose(mongoose);
 
-
-//app imports
-const { usersRouter } = require("./routers");
-// const { companiesRouter } = require("./routers");
-// const { jobsRouter } = require("./routers");
-
-app.get('/', (request, response, next) => {
-  return response.redirect('/items');
+//root route
+app.get("/", (req, res, next) => {
+	return res.send("Go to /users, /companies, or /jobs");
 });
-app.use('/users', usersRouter);
-// app.use('/companies', companiesRouter);
-// app.use('/jobs', jobsRouter);
 
-app.listen(3000, () => {
-  console.log('Express Templating Server listening on port 3000');
+//resource routes
+const { usersRouter, companiesRouter /*jobsRouter*/ } = require("./routers");
+
+app.use("/users", usersRouter);
+app.use("/companies", companiesRouter);
+/*app.use('/jobs', jobsRouter);*/
+
+//error handler
+app.use((err, req, res, next) => {
+	res.send(err);
 });
+
+module.exports = app;

@@ -1,18 +1,3 @@
-const mongoose = require("mongoose");
-
-mongoose.Promise = Promise;
-mongoose.set("debug, true");
-mongoose
-	.connect("mongodb://localhost/linkedList", {
-		useMongoClient: true
-	})
-	.then(() => {
-		console.log("Connected to MongoDB!");
-	})
-	.catch(err => {
-		console.error(err);
-	});
-
 exports.User = require("./User");
 exports.Company = require("./Company");
-exports.Job = require("./Job");
+/*exports.Job = require("./Job");*/

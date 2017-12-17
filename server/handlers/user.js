@@ -1,60 +1,42 @@
-// app imports
-const { User } = require('../models');
+const { User } = require("../models");
 
-function readUser(request, response, next) {
-  //getting user from username
-  User.find({name: request.params.username})
-    .then(user => response.status(200).json(formatResponse(user)))
+function readUsers(req, res, next) {
+  User.find()
+    .then(users => res.status(200).json({ data: users }))
     .catch(err => next(err));
 }
 
-
-
-function updateUser(request, response, next) {
-  const { username } = request.params;
-  const correctUser = ensureCorrectUser(
-    request.headers.authorization,
-    username
-  );
-  if (correctUser !== 'OK') {
-    return next(correctUser);
-  }
-  const validSchema = validateSchema(
-    v.validate(request.body, userUpdateSchema),
-    'user'
-  );
-  if (validSchema !== 'OK') {
-    return next(validSchema);
-  }
-  return User.updateUser(username, request.body.data)
-    .then(user => response.json(formatResponse(user)))
-    .catch(err => next(err));
-}
-
-function deleteUser(request, response, next) {
-  const username = request.params.username;
-  const correctUser = ensureCorrectUser(
-    request.headers.authorization,
-    username
-  );
-  if (correctUser !== 'OK') {
-    return next(correctUser);
-  }
-  return User.deleteUser(username)
-    .then(user => response.json(formatResponse(user)))
-    .catch(err => next(err));
-}
-
-function createUser(request, response, next) {
-  const user = new User(request.body);
-  user
+function createUser(req, res, next) {
+  const newUser = new User(req.body.data);
+  newUser
     .save()
-    .then(user => response.status(201).json(user))
+    .then(user => res.status(201).json({ data: user }))
     .catch(err => next(err));
 }
 
+function readUser(req, res, next) {
+  User.findOne({ username: req.params.username })
+    .then(user => res.status(200).json({ data: user }))
+    .catch(err => next(err));
+}
+
+//is updating the user, but does not send updated user in json
+function updateUser(req, res, next) {
+  User.findOneAndUpdate({ username: req.params.username }, req.body.data, {
+    runValidators: true
+  })
+    .then(user => res.status(200).json({ data: user }))
+    .catch(err => next(err));
+}
+
+function deleteUser(req, res, next) {
+  User.findOneAndRemove({ username: req.params.username })
+    .then(user => res.status(200).json({ data: user }))
+    .catch(err => next(err));
+}
 
 module.exports = {
+  readUsers,
   createUser,
   readUser,
   updateUser,
