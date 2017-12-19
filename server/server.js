@@ -19,11 +19,11 @@ app.get("/", (req, res, next) => {
 });
 
 //resource routes
-const { usersRouter, companiesRouter /*jobsRouter*/ } = require("./routers");
+const { usersRouter, companiesRouter, jobsRouter } = require("./routers");
 
 app.use("/users", usersRouter);
 app.use("/companies", companiesRouter);
-/*app.use('/jobs', jobsRouter);*/
+app.use('/jobs', jobsRouter);
 
 //error handler
 app.use((err, req, res, next) => {
