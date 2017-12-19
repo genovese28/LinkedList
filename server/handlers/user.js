@@ -10,7 +10,7 @@ function createUser(req, res, next) {
   const newUser = new User(req.body.data);
   newUser
     .save()
-    .then(user => res.status(201).json({ data: newUser }))
+    .then(user => res.status(201).json({ data: user }))
     .catch(err => next(err));
 }
 
