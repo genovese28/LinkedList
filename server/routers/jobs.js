@@ -8,7 +8,7 @@ router
 	.post(jobHandler.createJob);
 
 router
-	.route("/:jobId")
+	.route("/:id")
 	.get(jobHandler.readJob)
 	.patch(jobHandler.updateJob)
 	.delete(jobHandler.deleteJob);

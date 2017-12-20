@@ -20,7 +20,6 @@ function readJob(req, res, next) {
     .catch(err => next(err));
 }
 
-//is updating the user, but does not send updated user in json
 function updateJob(req, res, next) {
   Job.findOneAndUpdate({ _id: req.params.id }, req.body.data, {
     runValidators: true
