@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt");
 const { User, Company } = require("../models");
 
 function readUsers(req, res, next) {
@@ -9,6 +10,8 @@ function readUsers(req, res, next) {
 async function createUser(req, res, next) {
   try {
     const newUser = new User(req.body.data);
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+    newUser.password = hashedPassword;
     await newUser.save();
     if (newUser.currentCompany) {
       await Company.findByIdAndUpdate(newUser.currentCompany, {
