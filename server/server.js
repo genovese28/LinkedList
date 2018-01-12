@@ -28,7 +28,8 @@ app.use("/jobs", jobsRouter);
 //error handler
 app.use((err, req, res, next) => {
 	console.log("We had an error");
-	res.json(err);
+	console.log(err);
+	return res.json(err);
 });
 
 module.exports = app;

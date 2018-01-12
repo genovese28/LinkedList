@@ -33,7 +33,7 @@ async function updateUser(req, res, next) {
   try {
     const user = await User.findOne({ username: req.params.username });
     if (user.currentCompany !== req.body.data.currentCompany) {
-      eval(require("locus"));
+      //eval(require("locus"));
       if (user.currentCompany) {
         await Company.findByIdAndUpdate(user.currentCompany, {
           $pull: { employees: user._id }
@@ -45,10 +45,11 @@ async function updateUser(req, res, next) {
         });
       }
     }
+    console.log("updatedUser");
     const updatedUser = await User.findOneAndUpdate(
       { username: req.params.username },
       req.body.data,
-      { runValidators: true }
+      { new: true }
     );
     res.status(200).json({ data: updatedUser });
   } catch (e) {

@@ -21,7 +21,7 @@ exports.setUpHeaders = function(app) {
 
 exports.setUpMongoose = function(mongoose) {
 	mongoose.Promise = Promise;
-	mongoose.set("debug, true");
+	mongoose.set("debug", true);
 	mongoose
 		.connect("mongodb://localhost/linkedList", {
 			useMongoClient: true
