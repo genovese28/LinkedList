@@ -1,5 +1,34 @@
 const bcrypt = require("bcrypt");
 const { User, Company } = require("../models");
+var jwt = require("jsonwebtoken");
+
+var secret = "SECRET"
+function logIn(req, res, next) {
+  // first - find a user by their username (which should always be unique)
+  User.findOne({ username: req.body.username })
+    .then(
+      function(user) {
+        // then check to see if their password is the same as the hashed one
+        user.comparePassword(req.body.password, function(err, isMatch) {
+          if (isMatch) {
+            // if so - they are logged in!
+            var token = jwt.sign({currentUser: user.username}, secret, {
+              expiresIn: 60 * 60 // expire in one hour
+            });
+            res.status(200).json({message: 'Authenticated!',
+            token: token
+            });
+           
+          } else {
+            res.status(400).json({ message: 'Invalid Credentials' });
+          }
+        });
+      },
+      function(err) {
+        res.send(err);
+      }
+  );
+}
 
 function readUsers(req, res, next) {
   User.find()
@@ -10,7 +39,7 @@ function readUsers(req, res, next) {
 async function createUser(req, res, next) {
   try {
     const newUser = new User(req.body.data);
-    const hashedPassword = await bcrypt.hash(user.password, 10);
+    const hashedPassword = await bcrypt.hash(newUser.password, 10);
     newUser.password = hashedPassword;
     await newUser.save();
     if (newUser.currentCompany) {
@@ -82,5 +111,6 @@ module.exports = {
   createUser,
   readUser,
   updateUser,
-  deleteUser
+  deleteUser,
+  logIn
 };

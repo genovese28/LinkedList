@@ -29,7 +29,7 @@ app.use("/jobs", jobsRouter);
 app.use((err, req, res, next) => {
 	console.log("We had an error");
 	console.log(err);
-	return res.json(err);
+	return res.send(err);
 });
 
 module.exports = app;
