@@ -1,3 +1,3 @@
 # LinkedList
  LinkedIn/AngelList type of clone.
- engineered front end using Jquery, HTML, CSS
+ engineered back end with Node.js and Express.js
